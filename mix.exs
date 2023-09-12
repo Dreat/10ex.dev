@@ -51,7 +51,8 @@ defmodule TenExTakeHome.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:cachex, "~> 3.6"},
-      {:mimic, "~> 1.7", only: :test}
+      {:mimic, "~> 1.7", only: :test},
+      {:ex_machina, "~> 2.7.0", only: :test}
     ]
   end
 
