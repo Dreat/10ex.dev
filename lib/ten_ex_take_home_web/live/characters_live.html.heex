@@ -1,0 +1,10 @@
+<div>
+  <ul>
+    <!-- for ease of testing reasons due to limited data --
+      I decided to add id to list element
+    Normally id would be on some top-level div to test -->
+    <%= for character <- @characters do %>
+      <li id={character}><%= character %></li>
+    <% end %>
+  </ul>
+</div>

@@ -13,6 +13,9 @@ config :ten_ex_take_home, TenExTakeHome.Repo,
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 
+config :ten_ex_take_home, TenExTakeHome.Marvel.HttpClient,
+  impl: TenExTakeHome.Marvel.MockHttpClient
+
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :ten_ex_take_home, TenExTakeHomeWeb.Endpoint,

@@ -8,7 +8,11 @@
 import Config
 
 config :ten_ex_take_home,
-  ecto_repos: [TenExTakeHome.Repo]
+  ecto_repos: [TenExTakeHome.Repo],
+  marvel_priv_key: System.get_env("MARVEL_PRIV_KEY"),
+  marvel_pub_key: System.get_env("MARVEL_PUB_KEY")
+
+config :ten_ex_take_home, TenExTakeHome.Marvel.HttpClient, impl: TenExTakeHome.Marvel.Impl
 
 # Configures the endpoint
 config :ten_ex_take_home, TenExTakeHomeWeb.Endpoint,
