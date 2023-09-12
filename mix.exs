@@ -50,7 +50,8 @@ defmodule TenExTakeHome.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:mox, "~>1.0", ony: :test}
+      {:cachex, "~> 3.6"},
+      {:mimic, "~> 1.7", only: :test}
     ]
   end
 

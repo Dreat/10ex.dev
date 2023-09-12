@@ -1,13 +1,20 @@
 defmodule TenExTakeHomeWeb.Live.CharactersLiveTest do
-  use TenExTakeHomeWeb.ConnCase
+  use TenExTakeHomeWeb.ConnCase, async: false
+  use Mimic
 
   import Phoenix.LiveViewTest
 
   @characters ["first", "second", "third"]
 
+  # needed to use mimic in cachex
+  setup :set_mimic_global
+
   describe "happy path tests" do
     setup do
-      Mox.stub(TenExTakeHome.Marvel.MockHttpClient, :get_characters, fn -> {:ok, @characters} end)
+      Cachex.clear!(:marvel_cache)
+
+      TenExTakeHome.Marvel.HttpClient
+      |> stub(:get_characters, fn -> {:ok, @characters} end)
 
       :ok
     end
@@ -23,7 +30,10 @@ defmodule TenExTakeHomeWeb.Live.CharactersLiveTest do
 
   describe "failures" do
     setup do
-      Mox.stub(TenExTakeHome.Marvel.MockHttpClient, :get_characters, fn -> {:error, :timeout} end)
+      Cachex.clear!(:marvel_cache)
+
+      TenExTakeHome.Marvel.HttpClient
+      |> stub(:get_characters, fn -> {:error, :timeout} end)
 
       :ok
     end

@@ -1,7 +1,7 @@
 defmodule TenExTakeHomeWeb.Live.CharactersLive do
   use TenExTakeHomeWeb, :live_view
 
-  alias TenExTakeHome.Marvel.HttpClient
+  alias TenExTakeHome.Characters
 
   def mount(_params, _session, socket) do
     default_assigns = get_default_assigns()
@@ -11,7 +11,7 @@ defmodule TenExTakeHomeWeb.Live.CharactersLive do
 
   defp get_default_assigns() do
     characters =
-      case HttpClient.get_characters() do
+      case Characters.get_characters() do
         {:ok, characters} -> characters
         {:error, _} -> []
       end
