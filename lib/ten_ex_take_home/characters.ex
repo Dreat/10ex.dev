@@ -2,20 +2,21 @@ defmodule TenExTakeHome.Characters do
   alias TenExTakeHome.ApiCalls
   alias TenExTakeHome.Marvel.HttpClient
 
-  def get_characters() do
+  def get_characters(page_number) do
+    cache_key = "characters-#{page_number}"
+
     with {:commit, val} <-
-           Cachex.fetch(:marvel_cache, "characters", fn ->
-             {:commit, HttpClient.get_characters()}
+           Cachex.fetch(:marvel_cache, cache_key, fn ->
+             {:commit, HttpClient.get_characters(page_number)}
            end) do
       log_successful_api_call()
-      Cachex.expire(:marvel_cache, "characters", :timer.seconds(3600))
+      Cachex.expire(:marvel_cache, cache_key, :timer.seconds(3600))
       val
     else
       {:ok, val} ->
         val
 
-      a ->
-        IO.inspect(a)
+      _ ->
         nil
     end
   end

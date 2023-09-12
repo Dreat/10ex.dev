@@ -5,6 +5,7 @@ defmodule TenExTakeHomeWeb.Live.CharactersLiveTest do
   import Phoenix.LiveViewTest
 
   @characters ["first", "second", "third"]
+  @second_page_characters ["fourth", "fifth", "sixth"]
 
   # needed to use mimic in cachex
   setup :set_mimic_global
@@ -14,7 +15,7 @@ defmodule TenExTakeHomeWeb.Live.CharactersLiveTest do
       Cachex.clear!(:marvel_cache)
 
       TenExTakeHome.Marvel.HttpClient
-      |> stub(:get_characters, fn -> {:ok, @characters} end)
+      |> stub(:get_characters, fn _page_number -> {:ok, @characters} end)
 
       :ok
     end
@@ -26,6 +27,26 @@ defmodule TenExTakeHomeWeb.Live.CharactersLiveTest do
         assert has_element?(view, "li##{character}")
       end
     end
+
+    test "changing page number reloads the characters", %{conn: conn} do
+      view = mount_liveview(conn)
+
+      for character <- @second_page_characters do
+        refute has_element?(view, "li##{character}")
+      end
+
+      # probably need better mocking here
+      TenExTakeHome.Marvel.HttpClient
+      |> stub(:get_characters, fn _page_number -> {:ok, @second_page_characters} end)
+
+      view
+      |> element("button#next-page")
+      |> render_click()
+
+      for character <- @second_page_characters do
+        assert has_element?(view, "li##{character}")
+      end
+    end
   end
 
   describe "failures" do
@@ -33,7 +54,7 @@ defmodule TenExTakeHomeWeb.Live.CharactersLiveTest do
       Cachex.clear!(:marvel_cache)
 
       TenExTakeHome.Marvel.HttpClient
-      |> stub(:get_characters, fn -> {:error, :timeout} end)
+      |> stub(:get_characters, fn _page_number -> {:error, :timeout} end)
 
       :ok
     end

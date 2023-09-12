@@ -9,13 +9,34 @@ defmodule TenExTakeHomeWeb.Live.CharactersLive do
     {:ok, assign(socket, default_assigns)}
   end
 
-  defp get_default_assigns() do
-    characters =
-      case Characters.get_characters() do
-        {:ok, characters} -> characters
-        {:error, _} -> []
-      end
+  def handle_event("next_page", _params, %{assigns: %{page_number: page_number}} = socket) do
+    new_page_number = page_number + 1
 
-    [characters: characters]
+    new_characters = get_characters(new_page_number)
+
+    {:noreply, assign(socket, page_number: new_page_number, characters: new_characters)}
+  end
+
+  def handle_event("previous_page", _params, %{assigns: %{page_number: page_number}} = socket) do
+    new_page_number = page_number - 1
+
+    new_characters = get_characters(new_page_number)
+
+    {:noreply, assign(socket, page_number: new_page_number, characters: new_characters)}
+  end
+
+  defp get_default_assigns() do
+    page_number = 1
+
+    characters = get_characters(page_number)
+
+    [characters: characters, page_number: page_number]
+  end
+
+  defp get_characters(page_number) do
+    case Characters.get_characters(page_number) do
+      {:ok, characters} -> characters
+      {:error, _} -> []
+    end
   end
 end

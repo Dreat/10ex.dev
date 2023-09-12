@@ -7,4 +7,9 @@
       <li id={character}><%= character %></li>
     <% end %>
   </ul>
+  <%= unless @page_number == 1 do %>
+    <button id="previous-page" phx-click="previous_page">⬅️</button>
+  <% end %>
+  <%= @page_number %>
+  <button id="next-page" phx-click="next_page">➡️</button>
 </div>
