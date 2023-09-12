@@ -18,6 +18,8 @@ defmodule TenExTakeHomeWeb.Router do
     pipe_through :browser
 
     live "/", Live.CharactersLive
+    # in real life should be hidden for users with specific role only
+    live "/admin", Live.ApiCallsLive
   end
 
   # Other scopes may use custom stacks.

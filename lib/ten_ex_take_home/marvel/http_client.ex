@@ -16,6 +16,7 @@ defmodule TenExTakeHome.Marvel.HttpClient do
     end
   end
 
+  # this could probably go to different module
   def construct_hash(timestamp, priv_key, pub_key) do
     :crypto.hash(:md5, "#{timestamp}#{priv_key}#{pub_key}") |> Base.encode16(case: :lower)
   end

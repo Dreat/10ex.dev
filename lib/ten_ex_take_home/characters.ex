@@ -25,6 +25,8 @@ defmodule TenExTakeHome.Characters do
   # and simplicity I will leave it here
   defp log_successful_api_call() do
     # if we wanted to log other calls, we would parametrize it
+    # `log_successful_api_call(call)`
+    # we could also add page number if needed
     call = "get_characters"
 
     # let's assume this won't fail
